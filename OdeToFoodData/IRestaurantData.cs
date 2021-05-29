@@ -8,7 +8,9 @@ namespace OdeToFoodData
     {
         List<Restaurant> GetRestaurantsByName(string name);
         Restaurant GetRestaurantById(int id);
-
+        Restaurant Update(Restaurant updatedRes);
+        Restaurant Add(Restaurant addedRestaurant);
+        int Commit();
     }
     public class InMemoData : IRestaurantData
     {
@@ -25,6 +27,17 @@ namespace OdeToFoodData
             };
         }
 
+        public Restaurant Add(Restaurant addedRestaurant)
+        {
+            restaurants.Add(addedRestaurant);
+            return addedRestaurant;
+        }
+
+        public int Commit()
+        {
+            return 0;
+        }
+
         public Restaurant GetRestaurantById(int id)
         {
             return restaurants.Find(res => res.Id == id);
@@ -35,6 +48,18 @@ namespace OdeToFoodData
             if (name != null)
                 return restaurants.FindAll(res => res.Name.StartsWith(name));
             else return restaurants;
+        }
+
+        public Restaurant Update(Restaurant updatedRes)
+        {
+            Restaurant restaurant = restaurants.Find(res => res.Id == updatedRes.Id);
+            if (restaurant != null)
+            {
+                restaurant.Name = updatedRes.Name;
+                restaurant.Location = updatedRes.Location;
+                restaurant.Cuisine = updatedRes.Cuisine;
+            }
+            return restaurant;
         }
     }
 }
